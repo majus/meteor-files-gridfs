@@ -1,0 +1,34 @@
+{
+  "name": "meteor-files-gridfs",
+  "version": "1.0.0",
+  "description": "Meteor-Files API extended to work with MongoDB GridFS",
+  "main": "package.js",
+  "scripts": {
+    "lint": "meteor npx eslint .",
+    "test": "meteor test-packages ./ --driver-package=meteortesting:mocha --once --raw-logs",
+    "test-dev": "meteor test-packages ./ --driver-package=meteortesting:mocha --raw-logs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/majus/meteor-files-gridfs.git"
+  },
+  "author": "Denis Perov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/majus/meteor-files-gridfs/issues"
+  },
+  "homepage": "https://github.com/majus/meteor-files-gridfs#readme",
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/eslint-parser": "^7.17.0",
+    "@majus/eslint-config-meteor": "0.0.1",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-meteor": "^7.3.0",
+    "eslint-plugin-react": "^7.29.2",
+    "eslint-plugin-react-hooks": "^4.3.0"
+  }
+}
