@@ -7,16 +7,19 @@ import { Random } from 'meteor/random';
 import { fetch } from 'meteor/fetch';
 import { FilesCollection } from 'meteor/ostrio:files';
 import AbortController from 'abort-controller';
-import { GridWriteStream } from './stream';
 import { getContentDisposition, createObjectId, createGridBucket } from './util';
 
 export class GridFilesCollectionServer extends FilesCollection {
+
+  static get GridWriteStream() {
+    return require('./stream').GridWriteStream;
+  }
 
   gridBucket = createGridBucket(this.collectionName);
 
   // Override default behaviour to stream directly to GridFS bypassing file system
   _createStream = function(_id, path, opts) {
-    this._currentUploads[_id] = new GridWriteStream(this.gridBucket, path, opts);
+    this._currentUploads[_id] = new this.constructor.GridWriteStream(this.gridBucket, path, opts);
   };
 
   download(http, version = 'original', fileRef) {

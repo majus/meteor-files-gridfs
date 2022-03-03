@@ -6,11 +6,12 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Npm.depends({
+const npmDeps = {
   'abort-controller': '3.0.0',
-});
+};
 
 Package.onUse(function (api) {
+  Npm.depends(npmDeps);
   api.versionsFrom('2.2');
   api.use([
     'ecmascript',
@@ -26,6 +27,20 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
-  api.use(['ecmascript', 'meteortesting:mocha']);
+  Npm.depends({
+    'sinon': '13.0.1',
+    'chai': '4.3.6',
+    'sinon-chai': '3.7.0',
+    'lodash': '4.17.21',
+    ...npmDeps,
+  });
+  api.use([
+    'ecmascript',
+    'meteortesting:mocha@2.0.3',
+    'hwillson:stub-collections@1.0.9',
+  ]);
   api.use('majus:files-gridfs');
+  api.addFiles([
+    'server/collection.test.js',
+  ], 'server');
 });
