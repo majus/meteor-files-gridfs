@@ -106,7 +106,7 @@ export class GridFilesCollectionServer extends FilesCollection {
             }
             if (proceedAfterUpload === true) {
               if (this.onAfterUpload) {
-                this.onAfterUpload.call(this, fileRef);
+                this.onAfterUpload(fileRef);
               }
               this.emit('afterUpload', fileRef);
             }
@@ -119,7 +119,6 @@ export class GridFilesCollectionServer extends FilesCollection {
   }
 
   load(url, _opts = {}, _callback, _proceedAfterUpload = false) {
-    this._debug(`[FilesCollection] [load(${url}, ${JSON.stringify(_opts)}, callback)]`);
     let opts = _opts;
     let callback = _callback;
     let proceedAfterUpload = _proceedAfterUpload;
@@ -132,6 +131,7 @@ export class GridFilesCollectionServer extends FilesCollection {
     } else if (_.isBoolean(opts)) {
       proceedAfterUpload = opts;
     }
+    this._debug(`[FilesCollection] [load(${url}, ${JSON.stringify(_opts)}, callback)]`);
     check(url, String);
     check(opts, Match.Optional(Object));
     check(callback, Match.Optional(Function));
@@ -178,7 +178,7 @@ export class GridFilesCollectionServer extends FilesCollection {
             }
             if (proceedAfterUpload === true) {
               if (this.onAfterUpload) {
-                this.onAfterUpload.call(this, fileRef);
+                this.onAfterUpload(fileRef);
               }
               this.emit('afterUpload', fileRef);
             }
@@ -190,7 +190,7 @@ export class GridFilesCollectionServer extends FilesCollection {
     const onError = Meteor.bindEnvironment((err) => {
       this._debug(`[FilesCollection] [load] [fetch(${url})] Error:`, err);
       if (!isEnded) {
-        this.isEnded = true;
+        isEnded = true;
         if (callback) {
           callback(err);
         }
@@ -221,22 +221,19 @@ export class GridFilesCollectionServer extends FilesCollection {
       } else {
         const message = response.statusText || 'Bad response with empty details';
         const error = new Meteor.Error(response.status, message);
-        this._debug(`[FilesCollection] [load] [fetch(${url})] Error: `, error);
-        isEnded = true;
-        if (callback) {
-          callback(error);
-        }
+        onError(error);
       }
     });
     const controller = new AbortController();
-    fetch(url, {
+    this.fetch(url, {
       headers: opts.headers || {},
       signal: controller.signal,
     }).then(onResponse).catch(onError);
     if (opts.timeout > 0) {
       Meteor.setTimeout(() => {
         if (!isEnded) {
-          onError(new Meteor.Error(408, `Request timeout after ${opts.timeout}ms`));
+          const error = new Meteor.Error(408, `Request timeout after ${opts.timeout}ms`);
+          onError(error);
           controller.abort();
         }
       }, opts.timeout);
@@ -274,6 +271,10 @@ export class GridFilesCollectionServer extends FilesCollection {
       result.versions.original.gridFileId = id.toHexString();
     }
     return result;
+  }
+
+  fetch(...args) {
+    return fetch(...args);
   }
 
 }

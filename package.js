@@ -28,9 +28,6 @@ Package.onUse(function (api) {
 
 Package.onTest(function (api) {
   Npm.depends({
-    'sinon': '13.0.1',
-    'chai': '4.3.6',
-    'sinon-chai': '3.7.0',
     'lodash': '4.17.21',
     ...npmDeps,
   });
@@ -38,6 +35,7 @@ Package.onTest(function (api) {
     'ecmascript',
     'meteortesting:mocha@2.0.3',
     'hwillson:stub-collections@1.0.9',
+    'majus:testing@0.0.2',
   ]);
   api.use('majus:files-gridfs');
   api.addFiles([

@@ -18,6 +18,10 @@
         "--driver-package=meteortesting:mocha",
         "--raw-logs"
       ],
+      "sourceMapPathOverrides": {
+        "meteor://💻app/packages/majus:files-gridfs/*": "${workspaceFolder}/*",
+        "meteor://💻app/packages/local-test:majus:files-gridfs/*": "${workspaceFolder}/*",
+      },
       "env": {
         "TEST_WATCH": "1"
       },
